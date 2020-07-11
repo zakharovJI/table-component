@@ -15,6 +15,7 @@
     "npm": "^6.10.1",
     "vue": "^2.5.17",
     "vue-async-computed": "^3.5.1",
+    "vue-clickaway": "^2.2.2",
     "vue-context": "^5.1.0",
     "vue-cookie": "latest",
     "vue-dynamic-dropdown": "^1.0.12",

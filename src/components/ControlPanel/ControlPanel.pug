@@ -1,0 +1,20 @@
+include ../../../node_modules/bempug/index
+- BEMPUG.modifier = '_';
+
++b('control-panel')
+  +e('block')
+    +e('text', {t: 'span'}) Sorting by:
+    +e('sorting', {})
+      +e('label', {t: 'label'}) Product (100g serving)
+        input(type="radio" hidden name="sorting")
+      +e('label', {t: 'label'}) Calories
+        input(type="radio" hidden name="sorting")
+      +e('label', {t: 'label'}) Fat (g)
+        input(type="radio" hidden name="sorting")
+      +e('label', {t: 'label'}) Carbs (g)
+        input(type="radio" hidden name="sorting")
+      +e('label', {t: 'label'}) Protein (g)
+        input(type="radio" hidden name="sorting")
+      +e('label', {t: 'label'}) Iron (%)
+        input(type="radio" hidden name="sorting")
+  +e('block', {m: 'managing'})

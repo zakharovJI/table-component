@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App/App.vue'
 import store from './store'
+import "./assets/symbols/icons"
 
 Vue.config.productionTip = false;
 
