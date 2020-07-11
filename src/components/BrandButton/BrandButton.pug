@@ -1,0 +1,8 @@
+include ../../../node_modules/bempug/index
+- BEMPUG.modifier = '_';
+
++b('brand-button', {t: 'button'})(
+  :class="{'brand-button_secondary' : secondary}"
+)
+  +e('text', {}) {{text}}
+    slot(name="append")

@@ -2,3 +2,8 @@ include ../../node_modules/bempug/index
 - BEMPUG.modifier = '_';
 
 +b('app')(id="app")
+  brand-button(
+    text="Confirm"
+  )
+    template(v-slot:append) 
+      +e('append', {p: 'brand-button', t: 'span'}) (G)

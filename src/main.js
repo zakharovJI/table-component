@@ -2,7 +2,20 @@ import Vue from 'vue'
 import App from './App/App.vue'
 import store from './store'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
+let requireComponent = require.context('../src', true, /Brand[A-Z]\w+\.vue$/)
+requireComponent.keys().forEach(function (fileName) {
+  let baseComponentConfig = requireComponent(fileName)
+  baseComponentConfig = baseComponentConfig.default || baseComponentConfig
+  let baseComponentName = baseComponentConfig.name || (
+    fileName
+      .replace(/^.+\//, '')
+      .replace(/\.\w+$/, '')
+  )
+  Vue.component(baseComponentName, baseComponentConfig)
+})
+
 
 new Vue({
   store,

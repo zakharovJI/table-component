@@ -1,0 +1,57 @@
+.brand-button {
+  $self: &;
+  $secondary-text-color: $comet;
+
+  min-height: 32px;
+  background-color: $primary-button-bg;
+  border: 1px solid $primary-button-bg;
+  border-radius: 2px;
+  padding: 0 16px;
+  cursor: pointer;
+  transition: background-color $base-interval linear, border-color $base-interval linear;
+
+  &:hover {
+    background-color: darken($primary-button-bg, 5%);
+    border-color: darken($primary-button-bg, 5%);
+  }
+
+  &:active {
+    background-color: darken($primary-button-bg, 10%);
+    border-color: darken($primary-button-bg, 10%);
+  }
+
+  &:focus {
+    border-color: darken($primary-button-bg, 10%);
+  }
+  
+  &__text {
+    color: $light;
+  }
+
+  &__append {
+    margin-left: 5px;
+  }
+
+  &_secondary {
+    background-color: $light;
+    border: 1px solid $primary-border-color;
+
+    &:hover {
+      background-color: darken($light, 5%);
+      border: 1px solid $primary-border-color;
+    }
+
+    &:active {
+      background-color: darken($light, 10%);
+      border: 1px solid $primary-border-color;
+    }
+
+    &:focus {
+      border-color: darken($primary-border-color, 10%);
+    }
+
+    & #{$self}__text {
+      color: $secondary-text-color;
+    }
+  }
+}
