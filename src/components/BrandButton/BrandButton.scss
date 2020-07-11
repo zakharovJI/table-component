@@ -1,6 +1,5 @@
 .brand-button {
   $self: &;
-  $secondary-text-color: $comet;
 
   min-height: 32px;
   background-color: $primary-button-bg;
@@ -51,7 +50,7 @@
     }
 
     & #{$self}__text {
-      color: $secondary-text-color;
+      color: $additional-text-color;
     }
   }
 }
