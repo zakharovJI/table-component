@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="11px" height="10px" viewBox="0 0 11 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 53.2 (72643) - https://sketchapp.com -->
+    <title>1868CD92-7F22-445B-825E-236D5676D620</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <path d="M5.82512627,8.75 L8.60685425,11.531728 L7.54619408,12.5923882 L4.01066017,9.05685425 L2.95,7.99619408 L7.54619408,3.4 L8.60685425,4.46066017 L5.81751442,7.25 L13,7.25 L13,8.75 L5.82512627,8.75 Z" id="path-1"></path>
+    </defs>
+    <g id="now" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="copying---step_2" transform="translate(-858.000000, -455.000000)">
+            <g id="copying" transform="translate(848.000000, 444.000000)">
+                <g id="icons/right_long_arrow_m" transform="translate(8.000000, 8.000000)">
+                    <g id="right_long_arrow_m">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <g id="Combined-Shape" transform="translate(7.975000, 7.996194) scale(-1, 1) translate(-7.975000, -7.996194) "></g>
+                        <g id="colors/Gray" mask="url(#mask-2)" fill="#999999">
+                            <g transform="translate(-52.000000, -52.000000)" id="Rectangle">
+                                <rect x="0" y="0" width="120" height="120"></rect>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
