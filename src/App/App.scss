@@ -1,7 +1,9 @@
 .app {
   $self: &;
-  
-  &__ {
-    
-  }
+
+  max-width: 1366px;
+  padding: 0 15px;
+  margin: auto;
+  display: flex;
+  min-height: 100vh;
 }

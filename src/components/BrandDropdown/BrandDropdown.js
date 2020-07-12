@@ -7,16 +7,13 @@ export default {
     label: {
       type: String,
       required: true,
-    }
+    },
+    value: {}
   },
   data() {
     return {
-      selfLabel: this.label,
       isDropdownActive: false,
     }
-  },
-  computed: {
-
   },
   methods: {
     hideDropdown() {

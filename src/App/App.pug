@@ -2,15 +2,5 @@ include ../../node_modules/bempug/index
 - BEMPUG.modifier = '_';
 
 +b('app')(id="app")
-  brand-dropdown(
-    label="Test"
-  )
-    template(v-slot:dropdown-list)
-      +e('dropdown-item', {p: 'brand-dropdown'}) Ntrcnasdasdsadsa
-      +e('dropdown-item', {p: 'brand-dropdown'}) Ntrcn
-      +e('dropdown-item', {p: 'brand-dropdown'}) Ntrcn
-  brand-button(
-    text="Confirm"
-  )
-    template(v-slot:append) 
-      +e('append', {p: 'brand-button', t: 'span'}) (G)
+  table-component
+  brand-notification

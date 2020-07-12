@@ -1,0 +1,54 @@
+include ../../../node_modules/bempug/index
+- BEMPUG.modifier = '_';
+
++b('brand-table')
+  +e('wrapper', {t: 'table'})
+    thead
+      tr
+        th
+          +e('brand-checkbox', {e: '&', t: 'brand-checkbox'})(
+            :class="{'brand-checkbox_part' : getPartCheckboxState()}"
+            :checked="false"
+            :object="{name: '', value: 'all'}"
+            @click="allColumnSelected($event, ...arguments)"
+            ref="selectAllCheckbox"
+          )
+        th(
+          v-for="head in sortedHeader"
+          :key="head.value"
+          :class="{'sorting' : !!checkSortingCol(head.value), " +
+          "'sorting_reverse' : !!checkSortingCol(head.value) && sortingFlag}"
+          @[checkSortingCol(head.value)]="sortData()"
+        )
+          +e('data', {}) {{ head.name }}
+            +e('icon', {t: 'svg'})
+              use(xlink:href="#arrow-down")
+    tbody
+      tr(
+        v-for="(row, index) in tableData"
+        :key="row.id+'-row'"
+      )
+        td
+          +e('brand-checkbox', {e: '&', t: 'brand-checkbox'})(
+            ref="showRowsCheckbox"
+            :object="row"
+            @click="columnSelected(row)"
+          )
+        td(
+          v-for="(item, index) in sortedHeader"
+          :key="item.value+index+'-td'"
+        )
+          +e('data', {}) {{ row[item.value] }}
+            +e('brand-button', {e: '&', t: 'brand-button'})(
+              v-if="sortedHeader.indexOf(item) === sortedHeader.length - 1"
+              text="Delete"
+              :secondary="true"
+              :withoutBorder="true"
+              :recursive="true"
+              :delete="true"
+              :deleteObject="row"
+            )
+              template(v-slot:prepend)
+                +e('icon', {p: 'brand-button', t: 'svg', m: 'prepend'})
+                  use(xlink:href="#trash")
+

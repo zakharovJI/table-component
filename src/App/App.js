@@ -1,8 +1,8 @@
+import TableComponent from "../components/TableComponent/TableComponent.vue";
+
 export default {
   name: 'App',
   components: {
-  },
-  mounted() {
-    this.$store.dispatch('getProductList');
+    TableComponent
   }
 }

@@ -10,7 +10,7 @@ include ../../../node_modules/bempug/index
     aria-controls="{'brand-dropdown__dropdown-menu'}"
     @click="toggleDropdown"
   )
-    +e('label', {}) {{ selfLabel }}
+    +e('label', {}) {{ label }}
     +e('icon', {t: 'svg'})
       use(xlink:href="#chevron-down")
   +e('dropdown-menu', {})(

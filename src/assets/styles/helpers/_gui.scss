@@ -1,14 +1,24 @@
 $light: #FFF;
+$light-gray: #F8F9FA;
+$gray: #EDEDED;
+$alpha-gray: rgba(150, 149, 149, 0.35);
 $ghost: #C6CBD4;
 $steel-gray: #282136;
 $ship-gray: #3D374A;
 $comet: #5B5E77;
+$mischka: #D5DAE0;
+$red: #ff1944;
 $primary-green: #00A11E;
+$secondary-green: rgba(0, 161, 30, 0.07);
 
 $primary-button-bg: $primary-green;
-$primary-border-color: $ghost;
+$primary-row-bg: $light-gray;
+$secondary-row-bg: $secondary-green;
+$primary-border-color: $mischka;
 $primary-text-color: $steel-gray;
 $secondary-text-color: $ship-gray;
-$additional-text-color: $primary-green;
+$additional-text-color: $ship-gray;
+$disable-color: $ghost;
+$error: $red;
 
 $base-interval: .15s;

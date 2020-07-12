@@ -2,7 +2,29 @@ include ../../../node_modules/bempug/index
 - BEMPUG.modifier = '_';
 
 +b('brand-button', {t: 'button'})(
-  :class="{'brand-button_secondary' : secondary}"
+  :class="{'brand-button_secondary' : secondary, " +
+  "'brand-button_squared' : squared, " +
+  "'brand-button_no-border' : withoutBorder, " +
+  "'brand-button_delete-active' : showDeletePopup, " +
+  "'brand-button_disable' : disable}"
+  @click="onClick"
 )
+  slot(name="prepend")
   +e('text', {}) {{text}}
     slot(name="append")
+  +e('delete-popup', {})(
+    v-if="recursive"
+    @click.prevent.stop=""
+  )
+    +e('text', {}) Are you sure you want to <b>delete item</b>?
+    +e('controls', {})
+      brand-button(
+        text="Cancel"
+        :secondary="true"
+        @click.stop="cancelDelete"
+      )
+      brand-button(
+        text="Confirm"
+        @click.stop="confirmDelete"
+      )
+    preloader(v-if="preloaderStateShow")

@@ -1,0 +1,17 @@
+include ../../../node_modules/bempug/index
+- BEMPUG.modifier = '_';
+
++b('brand-checkbox', {t: 'div'})(
+)
+	+e('control', {t: 'label'})(
+		ref="control"
+	)
+		input(
+			v-model="stateChecked"
+			@click="onClick"
+			type="checkbox"
+			hidden
+			ref="input"
+		)&attributes(attributes)
+		+e('view')(ref="view")
+		+e('text')(v-if="object.name") {{object.name}}

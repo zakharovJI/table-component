@@ -1,7 +1,56 @@
 .control-panel {
   $self: &;
+  display: flex;
   
-  &__ {
-    
+  &__block {
+    display: flex;
+    align-items: center;
+    height: max-content;
+
+    &:not(:last-child) {
+      margin-right: 20px;
+    }
+
+    &:first-child {
+      margin-right: auto;
+    }
+
+    &_pagination {
+      & #{$self}__text {
+        margin: 0 8px;
+      }
+    }
+  }
+
+  &__title {
+    font-weight: 600;
+    color: $secondary-text-color;
+    margin-right: 8px;
+  }
+
+  &__sorting {
+    height: 32px;
+    display: flex;
+    align-items: center;
+
+    & #{$self}__label {
+      color: $primary-text-color;
+      padding: 4px 8px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all $base-interval linear;
+      user-select: none;
+
+      &:not(:last-child) {
+        margin-right: 3px;
+      }
+    }
+
+    input:checked {
+      & + #{$self}__label {
+        background-color: $primary-button-bg;
+        color: $light;
+      }
+    }
   }
 }

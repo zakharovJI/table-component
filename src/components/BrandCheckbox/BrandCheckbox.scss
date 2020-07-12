@@ -1,0 +1,84 @@
+.brand-checkbox {
+  $self: &;
+  
+  display: inline-block;
+  color: lightgray;
+
+  &__text {
+    color: $primary-text-color;
+  }
+  
+  &__control {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+
+    input {
+      &:checked + #{$self}__view {
+        background-color: $primary-button-bg;
+
+        &:after, &:before {
+          border-color: $light;
+        }
+      }
+    }
+    
+    #{$self}__view {
+      position: relative;
+      display: inline-block;
+      min-width: 14px;
+      flex-basis: 14px;
+      height: 14px;
+      cursor: pointer;
+      border-radius: 1px;
+      border: 1px solid $disable-color;
+      background-color: $light;
+  
+      &:after {
+        content: '';
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        display: block;
+        transition: all .1s linear;
+        width: 3px;
+        height: 7px;
+        border-bottom: 1px solid $light;
+        border-right: 1px solid $light;
+        transform: translate(-50%, -50%) rotate(40deg);
+      }
+    }
+    
+    #{$self}__text {
+      margin-left: 13px;
+      cursor: pointer;
+  
+    }
+  }
+  
+  &_part {
+    #{$self}__control {
+      input:not(:checked) + #{$self}__view {
+        background-color: $primary-button-bg;
+        border-color: $primary-button-bg;
+
+        &:after {
+          content: none;
+        }
+
+        &:before {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          content: '';
+          display: block;
+          height: 1px;
+          width: 10px;
+          background-color: $light;
+        }
+      }
+    }
+  }
+
+}

@@ -3,18 +3,92 @@ include ../../../node_modules/bempug/index
 
 +b('control-panel')
   +e('block')
-    +e('text', {t: 'span'}) Sorting by:
+    +e('title', {t: 'span'}) Sorting by:
     +e('sorting', {})
-      +e('label', {t: 'label'}) Product (100g serving)
-        input(type="radio" hidden name="sorting")
-      +e('label', {t: 'label'}) Calories
-        input(type="radio" hidden name="sorting")
-      +e('label', {t: 'label'}) Fat (g)
-        input(type="radio" hidden name="sorting")
-      +e('label', {t: 'label'}) Carbs (g)
-        input(type="radio" hidden name="sorting")
-      +e('label', {t: 'label'}) Protein (g)
-        input(type="radio" hidden name="sorting")
-      +e('label', {t: 'label'}) Iron (%)
-        input(type="radio" hidden name="sorting")
-  +e('block', {m: 'managing'})
+      template(
+        v-for="item in sortedSelectedColumns"
+      )
+        +e('label', {t: 'input'})(
+          v-model="sortActiveCol"
+          :value="item.value"
+          :id="item.value"
+          type="radio"
+          name="sorting"
+          hidden
+        )
+        +e('label', {t: 'label'})(:for="item.value") {{ item.name }}
+  +e('block')
+    brand-button(
+      text="Delete"
+      :disable="!selectedRows.length"
+      :recursive="true"
+      :delete="true"
+      :deleteObject="selectedRows"
+    )
+      template(
+        v-if="selectedRows.length"
+        v-slot:append
+      )
+        span &nbsp; ({{ selectedRows.length}})
+  +e('block')
+    brand-dropdown(
+      v-model="showRowsValue"
+      :label="showingRows.find(x => x.value === showRowsCounter).name"
+      ref="rowSelect"
+    )
+      template(v-slot:dropdown-list)
+        +e('dropdown-item', {p: 'brand-dropdown'})(
+          v-for="item in showingRows"
+          :key="item.value"
+          @click="showRowSelected(item.value)"
+        ) {{ item.name }}
+  +e('block', {m: 'pagination'})
+    brand-button(
+      text=""
+      :secondary="true"
+      :squared="true"
+      @click="paginationBtnClicked('prev')"
+    )
+      template(v-slot:append)
+        +e('icon', {p: 'brand-button', m: 'left', t: 'svg'})
+          use(xlink:href="#chevron-down")
+
+    +e('text', {})
+      b {{ showRowsValue + 1}} -
+      b {{ showRowsValue + showRowsCounter + ' '}}
+      span of
+      b {{ ' ' + tableDataLength }}
+
+    brand-button(
+      text=""
+      :secondary="true"
+      :squared="true"
+      @click="paginationBtnClicked('next')"
+    )
+      template(v-slot:append)
+        +e('icon', {p: 'brand-button', m: 'right', t: 'svg'})
+          use(xlink:href="#chevron-down")
+  +e('block')
+    brand-dropdown(
+      :label="sortedSelectedColumns.length + ' columns selected'"
+    )
+      template(v-slot:dropdown-list)
+        +e('dropdown-item', {p: 'brand-dropdown', m: 'no-padding.all'})
+          +e('checkbox', {t: 'brand-checkbox', e: 'brand-dropdown'})(
+            :class="{'brand-checkbox_part' : getPartCheckboxState()}"
+            :checked="true"
+            :object="{name: 'Select all', value: 'all'}"
+            @click="allColumnSelected($event, ...arguments)"
+            ref="selectAllCheckbox"
+          )
+        +e('dropdown-item', {p: 'brand-dropdown', m: 'no-padding'})(
+          v-for="item in productParameters"
+          :key="item.value"
+        )
+          +e('checkbox', {t: 'brand-checkbox', e: 'brand-dropdown'})(
+            ref="showRowsCheckbox"
+            :checked="true"
+            :object="item"
+
+            @click="columnSelected($event, ...arguments)"
+          )

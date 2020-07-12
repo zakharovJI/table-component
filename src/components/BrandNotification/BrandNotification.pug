@@ -1,0 +1,10 @@
+include ../../../node_modules/bempug/index
+- BEMPUG.modifier = '_';
+
++b('brand-notification')
+  +e('item', {})(
+    v-for="(item, index) in stack"
+    :key="'BrandNotification-item-' + index"
+    :class="{'brand-notification__item_error' : item.type === 'error'}"
+  )
+    +e('text', {})(v-html="item.text")
