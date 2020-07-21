@@ -23,7 +23,18 @@ module.exports = {
     config.module
       .rule('svg')
       .exclude.add(resolve('src/assets/symbols'))
-      .end();
+      .end()
+      .use('file-loader')
+      .loader('file-loader')
+      .options({
+        name(file) {
+          // if (process.env.NODE_ENV === 'development') {
+          //   return 'assets/images/[hash].[ext]';
+          // }
+
+          return 'assets/images/[name].[ext]';
+        },
+      });
 
     config.module
       .rule('icons')

@@ -17,6 +17,7 @@ include ../../../node_modules/bempug/index
           v-for="head in sortedHeader"
           :key="head.value"
           :class="{'sorting' : !!checkSortingCol(head.value), " +
+          "'product' : head.value === 'product', " +
           "'sorting_reverse' : !!checkSortingCol(head.value) && sortingFlag}"
           @[checkSortingCol(head.value)]="sortData()"
         )

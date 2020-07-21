@@ -3,14 +3,16 @@
 
   width: 100%;
   margin-top: 16px;
+  border: 1px solid $gray;
+  overflow: hidden;
+  border-radius: 4px;
+
 
   &__wrapper {
     background: $light;
-    border-radius: 4px;
     border-collapse: collapse;
     width: 100%;
     color: $primary-text-color;
-    border: 1px solid $gray;
 
     & #{$self}__brand-checkbox {
       position: absolute;
@@ -31,8 +33,12 @@
       border-bottom: 1px solid $gray;
       position: relative;
 
+      &:not(:first-child), &:not(:last-child) {
+        width: 155px;
+      }
+
       &:first-child {
-        width: 80px;
+        width: 69px;
         padding-left: 36px;
       }
 
@@ -59,6 +65,10 @@
             transform: none;
           }
         }
+      }
+
+      &.product {
+        width: 192px;
       }
     }
   }
@@ -96,7 +106,7 @@
       position: relative;
 
       &:first-child {
-        width: 80px;
+        //width: 80px;
         padding-left: 36px;
       }
 
