@@ -10,6 +10,28 @@ const state = {
 
 };
 
+const getters = {
+  getSortedProductList: state => flag => {
+    const sortingCol = state.sortActiveCol;
+
+    if (flag && sortingCol && sortingCol === 'product') {
+      return state.productList.slice().sort((a, b) => a[sortingCol]?.toString().localeCompare(b[sortingCol]?.toString()))
+    } else {
+      return state.productList.slice().sort((a, b) => b[sortingCol]?.toString().localeCompare(a[sortingCol]?.toString()))
+    }
+
+    if (flag && sortingCol && sortingCol !== 'product') {
+      return state.productList.slice().sort((a, b) => a[sortingCol] - b[sortingCol])
+    } else {
+      return state.productList.slice().sort((a, b) => b[sortingCol] - a[sortingCol])
+    }
+
+    if (!sortingCol) {
+      return state.productList;
+    }
+  }
+}
+
 const mutations = {
   SET_PRODUCT_LIST(state, productList) {
     state.productList = productList;
@@ -105,6 +127,7 @@ const actions = {
 export default {
   namespaced: true,
   state,
+  getters,
   actions,
   mutations,
 };

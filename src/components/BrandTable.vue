@@ -178,17 +178,19 @@
       sortData(flag = this.sortingFlag) {
         const sortingCol = this.sortActiveCol;
 
-        if (flag && this.sortActiveCol === 'product') {
-          this.tableData = this.tableData.slice().sort((a, b) => a[sortingCol]?.toString().localeCompare(b[sortingCol]?.toString()))
-        } else {
-          this.tableData = this.tableData.slice().sort((a, b) => b[sortingCol]?.toString().localeCompare(a[sortingCol]?.toString()))
-        }
+        this.tableData = this.$store.getters.getSortedProductList(flag);
 
-        if (flag && this.sortActiveCol !== 'product') {
-          this.tableData = this.tableData.slice().sort((a, b) => a[sortingCol] - b[sortingCol])
-        } else {
-          this.tableData = this.tableData.slice().sort((a, b) => b[sortingCol] - a[sortingCol])
-        }
+        // if (flag && sortingCol === 'product') {
+        //   this.tableData = this.tableData.slice().sort((a, b) => a[sortingCol]?.toString().localeCompare(b[sortingCol]?.toString()))
+        // } else {
+        //   this.tableData = this.tableData.slice().sort((a, b) => b[sortingCol]?.toString().localeCompare(a[sortingCol]?.toString()))
+        // }
+        //
+        // if (flag && sortingCol !== 'product') {
+        //   this.tableData = this.tableData.slice().sort((a, b) => a[sortingCol] - b[sortingCol])
+        // } else {
+        //   this.tableData = this.tableData.slice().sort((a, b) => b[sortingCol] - a[sortingCol])
+        // }
 
         this.sortingFlag = !this.sortingFlag;
       }
