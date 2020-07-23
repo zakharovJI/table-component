@@ -233,10 +233,6 @@
       columnSelected(e, params) {
         if (params.value) {
           this.selectedColumns = this.selectedColumns.filter(x => x.value !== params.name);
-
-          // if (!this.selectedColumns.find(x => x.value === this.sortActiveCol)) {
-          //   this.sortActiveCol = this.selectedColumns[0]?.value
-          // }
         } else {
           this.selectedColumns.push(this.productParameters.find(x => x.value === params.name))
         }
