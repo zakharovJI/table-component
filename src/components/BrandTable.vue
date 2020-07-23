@@ -5,7 +5,7 @@
         <tr>
           <th>
             <brand-checkbox
-              :class="{'brand-checkbox_part' : getPartCheckboxState()}"
+              :class="[{'brand-checkbox_part' : getPartCheckboxState()}, $style['brand-checkbox']]"
               :checked="false"
               :object="{name: '', value: 'all'}"
               @click="allColumnSelected($event, ...arguments)"
@@ -35,6 +35,7 @@
         >
           <td>
             <brand-checkbox
+              :class="$style['brand-checkbox']"
               :object="row"
               @click="columnSelected(row)"
               ref="showRowsCheckbox"
@@ -200,12 +201,11 @@
     $self: &;
 
     width: 100%;
-    margin-top: 16px;
     border: 1px solid $gray;
     border-radius: 4px;
 
 
-    .wrapper {
+    table {
       background: $light;
       border-collapse: collapse;
       width: 100%;

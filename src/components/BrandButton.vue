@@ -5,7 +5,7 @@
     'brand-button_squared' : squared,
     'brand-button_no-border' : withoutBorder,
     'brand-button_delete-active' : showDeletePopup,
-    'brand-button_disable' : disable}"
+    'brand-button_disabled' : disabled}"
     @click="onClick"
   >
     <slot name="prepend" />
@@ -53,7 +53,7 @@
         required: false,
         default: false
       },
-      disable: {
+      disabled: {
         type: Boolean,
         required: false,
         default: false
@@ -235,7 +235,7 @@
       }
     }
 
-    &_disable {
+    &_disabled {
       border-color: $disable-color;
       background-color: transparent;
       cursor: default;

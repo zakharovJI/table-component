@@ -7,7 +7,7 @@ const state = {
   showRowsValue: 0,
   showRowsCounter: 10,
   showRowsStartValue: 0,
-
+  maxValueReachedFlag: false
 };
 
 const getters = {
@@ -67,6 +67,9 @@ const mutations = {
   SET_SHOW_ROWS_COUNTER(state, value) {
     state.showRowsCounter = value;
   },
+  SET_MAX_VALUE_REACHED_FLAG(state, flag) {
+    state.maxValueReachedFlag = flag;
+  }
 
 };
 
@@ -128,6 +131,10 @@ const actions = {
 
   setShowRowsCounter({commit}, counter) {
     commit('SET_SHOW_ROWS_COUNTER', counter);
+  },
+
+  setMaxValueReachedFlag({commit}, flag) {
+    commit('SET_MAX_VALUE_REACHED_FLAG', flag);
   },
 };
 

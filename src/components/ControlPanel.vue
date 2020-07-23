@@ -15,7 +15,7 @@
     <div class="control-panel__block">
       <brand-button
           text="Delete"
-          :disable="!selectedRows.length"
+          :disabled="!selectedRows.length"
           :recursive="true"
           :delete="true"
           :deleteObject="selectedRows"
@@ -49,6 +49,7 @@
           text=""
           :secondary="true"
           :squared="true"
+          :disabled="!showRowsValue"
           @click="paginationBtnClicked('prev')"
       >
         <template v-slot:append>
@@ -59,7 +60,8 @@
       </brand-button>
       <span class="control-panel__text">
             <strong> {{ showRowsValue + 1}} - </strong>
-            <strong> {{ showRowsValue + showRowsCounter + ' '}} </strong>
+            <strong v-if="!maxValueReachedFlag"> {{ showRowsValue + showRowsCounter + ' '}} </strong>
+            <strong v-else> {{ tableDataLength + ' '}} </strong>
             <span> of </span>
             <strong> {{ ' ' + tableDataLength }} </strong>
           </span>
@@ -67,6 +69,7 @@
           text=""
           :secondary="true"
           :squared="true"
+          :disabled="maxValueReachedFlag"
           @click="paginationBtnClicked('next')"
       >
         <template v-slot:append>
@@ -168,7 +171,8 @@
       ...mapState([
         'selectedRows',
         'showRowsValue',
-        'showRowsCounter'
+        'showRowsCounter',
+        'maxValueReachedFlag',
       ]),
       ...mapState({
         tempShowPage: 'showRowsStartValue'
@@ -190,6 +194,12 @@
       showRowSelected(value) {
         this.$store.dispatch("table/setShowRowsCounter", value);
         this.$refs.rowSelect.toggleDropdown();
+
+        if (this.showRowsValue + this.showRowsCounter + 1 > this.tableDataLength) {
+          this.$store.dispatch('table/setMaxValueReachedFlag', true)
+        } else {
+          this.$store.dispatch('table/setMaxValueReachedFlag', false)
+        }
       },
       paginationBtnClicked(type) {
         this.$store.dispatch("table/deleteAllFromSelectedRows");
@@ -200,9 +210,23 @@
           } else {
             this.$store.dispatch("table/setShowRowsValue", 0);
           }
+
+          if (this.maxValueReachedFlag) {
+            this.$store.dispatch('table/setMaxValueReachedFlag', false)
+          }
         } else {
-          if (this.showRowsValue + this.showRowsCounter < this.tableDataLength) {
+          if (this.showRowsValue + this.showRowsCounter * 2 + 1 <= this.tableDataLength) {
+            console.log(this.showRowsValue, this.showRowsCounter, this.tableDataLength)
             this.$store.dispatch("table/setShowRowsValue", this.showRowsValue + this.showRowsCounter);
+
+            if (this.maxValueReachedFlag) {
+              this.$store.dispatch('table/setMaxValueReachedFlag', false)
+            }
+          } else {
+            if (!this.maxValueReachedFlag) {
+              this.$store.dispatch("table/setShowRowsValue", this.showRowsValue + this.showRowsCounter);
+            }
+            this.$store.dispatch('table/setMaxValueReachedFlag', true)
           }
         }
       },
@@ -210,9 +234,9 @@
         if (params.value) {
           this.selectedColumns = this.selectedColumns.filter(x => x.value !== params.name);
 
-          if (!this.selectedColumns.find(x => x.value === this.sortActiveCol)) {
-            this.sortActiveCol = this.selectedColumns[0]?.value
-          }
+          // if (!this.selectedColumns.find(x => x.value === this.sortActiveCol)) {
+          //   this.sortActiveCol = this.selectedColumns[0]?.value
+          // }
         } else {
           this.selectedColumns.push(this.productParameters.find(x => x.value === params.name))
         }
@@ -251,7 +275,9 @@
 <style lang="scss">
   .control-panel {
     $self: &;
+
     display: flex;
+    padding: 16px 0;
 
     &__block {
       display: flex;
