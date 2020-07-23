@@ -15,7 +15,7 @@ const getters = {
     const sortingCol = state.sortActiveCol;
 
     if (sortingCol === 'product') {
-      if (flag && sortingCol) {
+      if (!flag) {
         console.log(1)
         return state.productList.slice().sort((a, b) => a[sortingCol]?.toString().localeCompare(b[sortingCol]?.toString()))
       } else {
@@ -23,7 +23,7 @@ const getters = {
         return state.productList.slice().sort((a, b) => b[sortingCol]?.toString().localeCompare(a[sortingCol]?.toString()))
       }
     } else {
-      if (flag && sortingCol) {
+      if (!flag) {
         console.log(3)
         return state.productList.slice().sort((a, b) => a[sortingCol] - b[sortingCol])
       } else {

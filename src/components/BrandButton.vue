@@ -104,7 +104,6 @@
 
         this.$store.dispatch('table/deleteProduct', this.deleteObject)
           .then(() => {
-            console.log('suc')
             this.showDeletePopup = false;
 
             if (this.deleteObject.length) {

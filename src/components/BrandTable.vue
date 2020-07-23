@@ -18,7 +18,7 @@
             :class="{ [$style.sorting] : !!checkSortingCol(head.value),
             [$style.product] : head.value === 'product',
             [$style.sorting_reverse] : !!checkSortingCol(head.value) && sortingFlag}"
-            @[checkSortingCol(head.value)]="sortData()"
+            @[checkSortingCol(head.value)]="sortData(sortingFlag, true)"
           >
             <div :class="$style.data"> {{ head.name }}
               <svg :class="$style.icon">
@@ -87,20 +87,13 @@
         type: Array,
         required: true
       },
-      // content: {
-      //   type: Array,
-      //   required: true
-      // },
     },
     data() {
       return {
         productList: this.$store.getters['table/getSortedProductList'](false),
-        sortingFlag: true,
+        sortingFlag: false,
         preloaderStateShow: false
       }
-    },
-    mounted() {
-      console.log(this.$style)
     },
     computed: {
       ...mapState([
@@ -124,8 +117,8 @@
     },
     watch: {
       sortActiveCol: function (newVal) {
-        this.sortData(true);
-        this.sortingFlag = false;
+        this.sortData(false);
+        this.sortingFlag = true;
       },
       showRowsCounter: function (newVal, oldVal) {
         if (newVal > oldVal) {
@@ -151,7 +144,7 @@
         }
       },
       productListLength: function () {
-        this.sortData(this.sortingFlag, false);
+        this.sortData(!this.sortingFlag);
       }
     },
     methods: {
@@ -192,12 +185,12 @@
 
         return null;
       },
-      sortData(flag = this.sortingFlag, changeFlag = true) {
+      sortData(flag = this.sortingFlag, changeFlag = false) {
+        this.productList = this.$store.getters['table/getSortedProductList'](flag);
+
         if (changeFlag) {
           this.sortingFlag = !this.sortingFlag;
         }
-
-        this.productList = this.$store.getters['table/getSortedProductList'](flag);
       }
     }
   }
