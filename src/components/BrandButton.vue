@@ -108,11 +108,11 @@
             this.showDeletePopup = false;
 
             if (this.deleteObject.length) {
-              this.$store.commit("table/DELETE_ALL_FROM_SELECTED_ROWS");
+              this.$store.dispatch("table/deleteAllFromSelectedRows");
             }
           })
           .catch(() => {
-            this.$store.commit('addToBrandNotificationStack', {
+            this.$store.dispatch('addToBrandNotificationStack', {
               text: 'На сервере произошла ошибка, <br> повторите запрос позднее.',
               type: 'error'
             });

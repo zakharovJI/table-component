@@ -34,7 +34,7 @@
         .then(() => {
         })
         .catch(() => {
-          this.$store.commit('addToBrandNotificationStack', {
+          this.$store.dispatch('addToBrandNotificationStack', {
             text: 'На сервере произошла ошибка, <br> повторите запрос позднее.',
             type: 'error'
           });

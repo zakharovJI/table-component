@@ -81,7 +81,7 @@ const actions = {
   },
 
   deleteFromSelectedRows({commit}, row) {
-    commit('DELETE_ALL_FROM_SELECTED_ROWS', row);
+    commit('DELETE_FROM_SELECTED_ROWS', row);
   },
 
   addAllToSelectedRows({commit}, rowList) {

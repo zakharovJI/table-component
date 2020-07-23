@@ -4,16 +4,11 @@
       <span class="control-panel__title"> Sorting by: </span>
       <div class="control-panel__sorting">
         <template v-for="item in sortedSelectedColumns">
-          <input
+          <div
               class="control-panel__label"
-              v-model="sortActiveCol"
-              :value="item.value"
-              :id="item.value"
-              type="radio"
-              name="sorting"
-              hidden
-          />
-          <label :for="item.value"> {{ item.name }} </label>
+              :class="{'control-panel__label_active' : sortActiveCol === item.value}"
+              @click="setSortActiveCol(item.value)"
+          > {{ item.name }} </div>
         </template>
       </div>
     </div>
@@ -157,7 +152,7 @@
     },
     watch: {
       sortActiveCol: function (newVal) {
-        this.$store.commit('table/SET_ACTIVE_SORT_COL', newVal);
+        this.$store.dispatch('table/setActiveSortCol', newVal);
 
         this.selectedColumns = this.selectedColumns.map(x => {
           return {
@@ -166,7 +161,9 @@
           }
         });
 
-        this.selectedColumns.find(x => x.value === newVal).tablePosition = 0;
+        if (newVal) {
+          this.selectedColumns.find(x => x.value === newVal).tablePosition = 0;
+        }
       }
     },
     computed: {
@@ -193,24 +190,21 @@
     },
     methods: {
       showRowSelected(value) {
-        this.$store.commit("table/SET_SHOW_ROWS_COUNTER", value);
+        this.$store.dispatch("table/setShowRowsCounter", value);
         this.$refs.rowSelect.toggleDropdown();
       },
       paginationBtnClicked(type) {
-        this.$store.commit("table/DELETE_ALL_FROM_SELECTED_ROWS");
+        this.$store.dispatch("table/deleteAllFromSelectedRows");
 
         if (type === 'prev') {
           if (this.showRowsValue - this.showRowsCounter > 0) {
-            // this.$store.commit("table/SET_SHOW_ROWS_COUNTER", this.showRowsValue);
-            this.$store.commit("table/SET_SHOW_ROWS_VALUE", this.showRowsValue - this.showRowsCounter);
+            this.$store.dispatch("table/setShowRowsValue", this.showRowsValue - this.showRowsCounter);
           } else {
-            this.$store.commit("table/SET_SHOW_ROWS_VALUE", 0);
+            this.$store.dispatch("table/setShowRowsValue", 0);
           }
         } else {
           if (this.showRowsValue + this.showRowsCounter < this.tableDataLength) {
-            console.log(123123)
-            // this.$store.commit("table/SET_SHOW_ROWS_COUNTER", this.showRowsValue);
-            this.$store.commit("table/SET_SHOW_ROWS_VALUE", this.showRowsValue + this.showRowsCounter);
+            this.$store.dispatch("table/setShowRowsValue", this.showRowsValue + this.showRowsCounter);
           }
         }
       },
@@ -245,6 +239,13 @@
       getPartCheckboxState() {
         return this.sortedSelectedColumns.length !== this.productParameters.length &&
           this.sortedSelectedColumns.length !== 0;
+      },
+      setSortActiveCol(value) {
+        if (this.sortActiveCol === value) {
+          this.sortActiveCol = null;
+        } else {
+          this.sortActiveCol = value
+        }
       }
     }
   }
@@ -296,10 +297,8 @@
         &:not(:last-child) {
           margin-right: 3px;
         }
-      }
 
-      input:checked {
-        & + #{$self}__label {
+        &_active {
           background-color: $primary-button-bg;
           color: $light;
         }

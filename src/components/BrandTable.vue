@@ -119,7 +119,7 @@
         } else {
           this.selectedRows.forEach(row => {
             if (!this.tableData.includes(row)) {
-              this.$store.commit("table/DELETE_FROM_SELECTED_ROWS", row);
+              this.$store.dispatch("table/deleteAllFromSelectedRows", row);
             }
           })
 
@@ -146,13 +146,13 @@
       },
       allColumnSelected() {
         if (this.$refs.selectAllCheckbox.stateChecked) {
-          this.$store.commit("table/DELETE_ALL_FROM_SELECTED_ROWS");
+          this.$store.dispatch("table/deleteAllFromSelectedRows");
 
           this.$refs.showRowsCheckbox.forEach(checkBox => {
             checkBox.stateChecked = false;
           });
         } else {
-          this.$store.commit("table/ADD_ALL_TO_SELECTED_ROWS", this.tableData)
+          this.$store.dispatch("table/addAllToSelectedRows", this.tableData)
 
           this.$refs.showRowsCheckbox.forEach(checkBox => {
             checkBox.stateChecked = true;
@@ -161,9 +161,9 @@
       },
       columnSelected(row) {
         if (this.selectedRows.includes(row)) {
-          this.$store.commit("table/DELETE_FROM_SELECTED_ROWS", row)
+          this.$store.dispatch("table/deleteFromSelectedRows", row)
         } else {
-          this.$store.commit("table/ADD_TO_SELECTED_ROWS", row)
+          this.$store.dispatch("table/addToSelectedRows", row)
         }
 
         this.$refs.selectAllCheckbox.stateChecked = this.selectedRows.length === this.tableData.length;

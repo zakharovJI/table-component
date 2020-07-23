@@ -30,7 +30,6 @@ module.exports = {
             }
           ]
         },
-        // this matches plain `<style>` or `<style scoped>`
         {
           use: [
             'vue-style-loader',
@@ -38,12 +37,6 @@ module.exports = {
           ]
         }
       ])
-      // .use('vue-style-loader')
-      // .loader('sass-loader')
-      // .options({
-      //   modules: true,
-      //   localIdentName: '[local]_[hash:base64:8]'
-      // })
       .end();
 
     config.module
@@ -54,10 +47,6 @@ module.exports = {
       .loader('file-loader')
       .options({
         name(file) {
-          // if (process.env.NODE_ENV === 'development') {
-          //   return 'assets/images/[hash].[ext]';
-          // }
-
           return 'assets/images/[name].[ext]';
         },
       });
