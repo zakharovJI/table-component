@@ -11,12 +11,14 @@
   </div>
 </template>
 <script>
+  import { mapState } from "vuex"
+
   export default {
     name: 'BrandNotification',
     computed: {
-      stack() {
-        return this.$store.getters.getBrandNotificationStack;
-      },
+      ...mapState({
+        stack: 'brandNotificationStack'
+      }),
     },
   }
 </script>

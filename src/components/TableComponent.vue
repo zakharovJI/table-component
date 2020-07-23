@@ -3,6 +3,7 @@
   <div class="table-component">
     <control-panel
       :tableDataLength="tableDataFull.length"
+      :baseProductParameters="baseProductParameters"
       ref="controlPanel"
     />
     <brand-table
@@ -19,6 +20,8 @@
 <script>
   import ControlPanel from "./ControlPanel.vue";
   import Preloader from "./Preloader.vue";
+  import { createNamespacedHelpers } from "vuex"
+  const { mapState } = createNamespacedHelpers('table');
 
   export default {
     name: 'TableComponent',
@@ -42,22 +45,43 @@
     },
     data() {
       return {
-        preloaderStateShow: true
+        preloaderStateShow: true,
+        baseProductParameters: [
+          {
+            name: 'Product (100g serving)',
+            value: 'product'
+          },
+          {
+            name: 'Calories',
+            value: 'calories'
+          },
+          {
+            name: 'Fat (g)',
+            value: 'fat'
+          },
+          {
+            name: 'Carbs (g)',
+            value: 'carbs'
+          },
+          {
+            name: 'Protein (g)',
+            value: 'protein'
+          },
+          {
+            name: 'Iron (%)',
+            value: 'iron'
+          },
+        ],
       }
     },
     computed: {
-      showRowsValue() {
-        return this.$store.getters["table/getShowRowsValue"]
-      },
-      showRowsCounter() {
-        return this.$store.getters["table/getShowRowsCounter"]
-      },
-      showRowsStartValue() {
-        return this.$store.getters["table/getShowRowsStartValue"]
-      },
-      tableDataFull() {
-        return this.$store.getters["table/getProductList"];
-      },
+      ...mapState([
+        'showRowsValue',
+        'showRowsCounter',
+      ]),
+      ...mapState({
+        tableDataFull: 'productList'
+      }),
       tableData() {
         const start = this.showRowsValue;
         const end = this.showRowsValue + this.showRowsCounter;

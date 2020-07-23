@@ -7,90 +7,36 @@ const state = {
   showRowsValue: 0,
   showRowsCounter: 10,
   showRowsStartValue: 0,
-  productParameters: [
-    {
-      name: 'Product (100g serving)',
-      value: 'product'
-    },
-    {
-      name: 'Calories',
-      value: 'calories'
-    },
-    {
-      name: 'Fat (g)',
-      value: 'fat'
-    },
-    {
-      name: 'Carbs (g)',
-      value: 'carbs'
-    },
-    {
-      name: 'Protein (g)',
-      value: 'protein'
-    },
-    {
-      name: 'Iron (%)',
-      value: 'iron'
-    },
-  ],
-  showingRows: [
-    {
-      name: '10 Per Page',
-      value: 10
-    },
-    {
-      name: '15 Per Page',
-      value: 15
-    },
-    {
-      name: '20 Per Page',
-      value: 20
-    },
-  ]
-};
 
-const getters = {
-  getProductList: state => state.productList,
-  getProductParameters: state => state.productParameters,
-  getShowingRows: state => state.showingRows,
-  getActiveSortCol: state => state.sortActiveCol,
-  getSelectedRows: state => state.selectedRows,
-  getShowRowsValue: state => state.showRowsValue,
-  getShowRowsCounter: state => state.showRowsCounter,
-  getShowRowsStartValue: state => state.showRowsStartValue
 };
-
 
 const mutations = {
-  setProductList(state, productList) {
+  SET_PRODUCT_LIST(state, productList) {
     state.productList = productList;
   },
-  deleteProduct(state, product) {
+  DELETE_PRODUCT(state, product) {
     state.productList = state.productList.filter(x => ![product].flat().includes(x));
   },
-  setActiveSortCol(state, columnName) {
+  SET_ACTIVE_SORT_COL(state, columnName) {
     state.sortActiveCol = columnName;
   },
-  addToSelectedRows(state, row) {
+  ADD_TO_SELECTED_ROWS(state, row) {
     state.selectedRows.push(row);
   },
-  removeFromSelectedRows(state, row) {
+  DELETE_FROM_SELECTED_ROWS(state, row) {
     state.selectedRows = state.selectedRows.filter(x => x !== row);
   },
-  addAllToSelectedRows(state, rowList) {
+  ADD_ALL_TO_SELECTED_ROWS(state, rowList) {
     state.selectedRows = rowList;
   },
-  removeAllFromSelectedRows(state) {
+  DELETE_ALL_FROM_SELECTED_ROWS(state) {
     state.selectedRows = [];
   },
-  setShowRowsValue(state, value) {
+  SET_SHOW_ROWS_VALUE(state, value) {
     state.showRowsValue = value;
   },
-  setShowRowsCounter(state, value) {
+  SET_SHOW_ROWS_COUNTER(state, value) {
     state.showRowsCounter = value;
-  },
-  setShowRowsStartValue(state, value) {
-    state.showRowsStartValue = value;
   },
 };
 
@@ -98,15 +44,13 @@ const actions = {
   async getProductList({commit}) {
     await getProducts()
       .then(resp => {
-        console.log(1)
-        commit('setProductList', resp);
+        commit('SET_PRODUCT_LIST', resp);
       })
       .catch(() => {
         return new Promise(async (resolve, reject) => {
           await getProducts()
             .then(resp => {
-              console.log(2)
-              commit('setProductList', resp);
+              commit('SET_PRODUCT_LIST', resp);
               resolve()
             })
             .catch(() => {
@@ -119,21 +63,48 @@ const actions = {
   async deleteProduct({commit}, product) {
     await deleteProducts()
       .then(() => {
-        commit('deleteProduct', product)
+        commit('DELETE_PRODUCT', product)
       })
       .catch((resp) => {
         return new Promise((resolve, reject) => {
           reject()
         })
       })
-  }
+  },
+
+  setActiveSortCol({commit}, columnName) {
+    commit('SET_ACTIVE_SORT_COL', columnName);
+  },
+
+  addToSelectedRows({commit}, row) {
+    commit('ADD_TO_SELECTED_ROWS', row);
+  },
+
+  deleteFromSelectedRows({commit}, row) {
+    commit('DELETE_ALL_FROM_SELECTED_ROWS', row);
+  },
+
+  addAllToSelectedRows({commit}, rowList) {
+    commit('ADD_ALL_TO_SELECTED_ROWS', rowList);
+  },
+
+  deleteAllFromSelectedRows({commit}) {
+    commit('DELETE_ALL_FROM_SELECTED_ROWS');
+  },
+
+  setShowRowsValue({commit}, value) {
+    commit('SET_SHOW_ROWS_VALUE', value);
+  },
+
+  setShowRowsCounter({commit}, counter) {
+    commit('SET_SHOW_ROWS_COUNTER', counter);
+  },
 };
 
 
 export default {
   namespaced: true,
   state,
-  getters,
   actions,
   mutations,
 };

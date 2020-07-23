@@ -16,8 +16,34 @@ module.exports = {
     config.module
       .rule('scss')
       .test(/\.scss/)
-      .use('import-glob-loader')
-      .loader('import-glob-loader')
+      .oneOf([
+        {
+          resourceQuery: /module/,
+          use: [
+            'vue-style-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                localIdentName: '[local]_[hash:base64:5]'
+              }
+            }
+          ]
+        },
+        // this matches plain `<style>` or `<style scoped>`
+        {
+          use: [
+            'vue-style-loader',
+            'sass-loader'
+          ]
+        }
+      ])
+      // .use('vue-style-loader')
+      // .loader('sass-loader')
+      // .options({
+      //   modules: true,
+      //   localIdentName: '[local]_[hash:base64:8]'
+      // })
       .end();
 
     config.module

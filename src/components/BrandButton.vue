@@ -108,7 +108,7 @@
             this.showDeletePopup = false;
 
             if (this.deleteObject.length) {
-              this.$store.commit("table/removeAllFromSelectedRows");
+              this.$store.commit("table/DELETE_ALL_FROM_SELECTED_ROWS");
             }
           })
           .catch(() => {

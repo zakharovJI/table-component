@@ -8,11 +8,8 @@ export default new Vuex.Store({
   state: {
     brandNotificationStack: [],
   },
-  getters: {
-    getBrandNotificationStack: state => state.brandNotificationStack,
-  },
   mutations: {
-    addToBrandNotificationStack(state, data = {}) {
+    ADD_TO_BRAND_NOTIFICATION_STACK(state, data) {
       let reducer = () => {
         state.brandNotificationStack.pop();
 
@@ -27,6 +24,9 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    addToBrandNotificationStack({ state, commit }, data = {}) {
+
+    }
   },
   modules: {
     table

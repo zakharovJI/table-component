@@ -5,13 +5,13 @@
       <div class="control-panel__sorting">
         <template v-for="item in sortedSelectedColumns">
           <input
-            class="control-panel__label"
-            v-model="sortActiveCol"
-            :value="item.value"
-            :id="item.value"
-            type="radio"
-            name="sorting"
-            hidden
+              class="control-panel__label"
+              v-model="sortActiveCol"
+              :value="item.value"
+              :id="item.value"
+              type="radio"
+              name="sorting"
+              hidden
           />
           <label :for="item.value"> {{ item.name }} </label>
         </template>
@@ -19,15 +19,15 @@
     </div>
     <div class="control-panel__block">
       <brand-button
-        text="Delete"
-        :disable="!selectedRows.length"
-        :recursive="true"
-        :delete="true"
-        :deleteObject="selectedRows"
+          text="Delete"
+          :disable="!selectedRows.length"
+          :recursive="true"
+          :delete="true"
+          :deleteObject="selectedRows"
       >
         <template
-          v-if="selectedRows.length"
-          v-slot:append
+            v-if="selectedRows.length"
+            v-slot:append
         >
           <span>  &nbsp; ({{ selectedRows.length}}) </span>
         </template>
@@ -35,26 +35,26 @@
     </div>
     <div class="control-panel__block">
       <brand-dropdown
-        v-model="showRowsValue"
-        :label="showingRows.find(x => x.value === showRowsCounter).name"
-        ref="rowSelect"
+          v-model="showRowsValue"
+          :label="showingRows.find(x => x.value === showRowsCounter).name"
+          ref="rowSelect"
       >
         <template v-slot:dropdown-list>
           <div
-            class="brand-dropdown__dropdown-item"
-            v-for="item in showingRows"
-            :key="item.value"
-            @click="showRowSelected(item.value)"> {{ item.name }}
+              class="brand-dropdown__dropdown-item"
+              v-for="item in showingRows"
+              :key="item.value"
+              @click="showRowSelected(item.value)"> {{ item.name }}
           </div>
         </template>
       </brand-dropdown>
     </div>
     <div class="control-panel__block control-panel__block_pagination">
       <brand-button
-        text=""
-        :secondary="true"
-        :squared="true"
-        @click="paginationBtnClicked('prev')"
+          text=""
+          :secondary="true"
+          :squared="true"
+          @click="paginationBtnClicked('prev')"
       >
         <template v-slot:append>
           <svg class="brand-button__icon brand-button__icon_left">
@@ -69,10 +69,10 @@
             <strong> {{ ' ' + tableDataLength }} </strong>
           </span>
       <brand-button
-        text=""
-        :secondary="true"
-        :squared="true"
-        @click="paginationBtnClicked('next')"
+          text=""
+          :secondary="true"
+          :squared="true"
+          @click="paginationBtnClicked('next')"
       >
         <template v-slot:append>
           <svg class="brand-button__icon brand-button__icon_right">
@@ -86,25 +86,25 @@
         <template v-slot:dropdown-list>
           <div class="brand-dropdown__dropdown-item brand-dropdown__no-padding brand-dropdown__all">
             <brand-checkbox
-              class="brand-dropdown__checkbox"
-              :class="{'brand-checkbox_part' : getPartCheckboxState()}"
-              :checked="true"
-              :object="{name: 'Select all', value: 'all'}"
-              @click="allColumnSelected($event, ...arguments)"
-              ref="selectAllCheckbox"
+                class="brand-dropdown__checkbox"
+                :class="{'brand-checkbox_part' : getPartCheckboxState()}"
+                :checked="true"
+                :object="{name: 'Select all', value: 'all'}"
+                @click="allColumnSelected($event, ...arguments)"
+                ref="selectAllCheckbox"
             />
           </div>
           <div
-            class="brand-dropdown__dropdown-item brand-dropdown__no-padding"
-            v-for="item in productParameters"
-            :key="item.value"
+              class="brand-dropdown__dropdown-item brand-dropdown__no-padding"
+              v-for="item in productParameters"
+              :key="item.value"
           >
             <brand-checkbox
-              class="brand-dropdown__checkbox"
-              ref="showRowsCheckbox"
-              :checked="true"
-              :object="item"
-              @click="columnSelected($event, ...arguments)"
+                class="brand-dropdown__checkbox"
+                ref="showRowsCheckbox"
+                :checked="true"
+                :object="item"
+                @click="columnSelected($event, ...arguments)"
             />
           </div>
         </template>
@@ -113,28 +113,51 @@
   </div>
 </template>
 <script>
+  import { createNamespacedHelpers } from "vuex"
+  const { mapState } = createNamespacedHelpers('table');
+
   export default {
     props: {
       tableDataLength: {
         type: Number,
         required: true,
+      },
+      baseProductParameters: {
+        type: Array,
+        required: true
       }
     },
     data() {
       return {
-        sortActiveCol: this.$store.getters["table/getActiveSortCol"],
-        selectedColumns: this.$store.getters['table/getProductParameters'].map((item, index) => {
+        ...mapState([
+          'sortActiveCol'
+        ]),
+        showingRows: [
+          {
+            name: '10 Per Page',
+            value: 10
+          },
+          {
+            name: '15 Per Page',
+            value: 15
+          },
+          {
+            name: '20 Per Page',
+            value: 20
+          },
+        ],
+        selectedColumns: this.baseProductParameters.map((item, index) => {
           return {
             ...item,
             basePosition: index + 1,
             tablePosition: index + 1
           }
-        })
+        }),
       }
     },
     watch: {
       sortActiveCol: function (newVal) {
-        this.$store.commit('table/setActiveSortCol', newVal);
+        this.$store.commit('table/SET_ACTIVE_SORT_COL', newVal);
 
         this.selectedColumns = this.selectedColumns.map(x => {
           return {
@@ -147,8 +170,16 @@
       }
     },
     computed: {
+      ...mapState([
+        'selectedRows',
+        'showRowsValue',
+        'showRowsCounter'
+      ]),
+      ...mapState({
+        tempShowPage: 'showRowsStartValue'
+      }),
       productParameters() {
-        return this.$store.getters['table/getProductParameters'].map((item, index) => {
+        return this.baseProductParameters.map((item, index) => {
           return {
             ...item,
             basePosition: index + 1,
@@ -159,42 +190,27 @@
       sortedSelectedColumns() {
         return this.selectedColumns.sort((a, b) => a.basePosition - b.basePosition)
       },
-      showingRows() {
-        return this.$store.getters['table/getShowingRows'];
-      },
-      selectedRows() {
-        return this.$store.getters["table/getSelectedRows"]
-      },
-      showRowsValue() {
-        return this.$store.getters["table/getShowRowsValue"]
-      },
-      showRowsCounter() {
-        return this.$store.getters["table/getShowRowsCounter"]
-      },
-      tempShowPage() {
-        return this.$store.getters["table/getShowRowsStartValue"]
-      }
     },
     methods: {
       showRowSelected(value) {
-        this.$store.commit("table/setShowRowsCounter", value);
+        this.$store.commit("table/SET_SHOW_ROWS_COUNTER", value);
         this.$refs.rowSelect.toggleDropdown();
       },
       paginationBtnClicked(type) {
-        this.$store.commit("table/removeAllFromSelectedRows");
+        this.$store.commit("table/DELETE_ALL_FROM_SELECTED_ROWS");
 
         if (type === 'prev') {
           if (this.showRowsValue - this.showRowsCounter > 0) {
-            // this.$store.commit("table/setShowRowsCounter", this.showRowsValue);
-            this.$store.commit("table/setShowRowsValue", this.showRowsValue - this.showRowsCounter);
+            // this.$store.commit("table/SET_SHOW_ROWS_COUNTER", this.showRowsValue);
+            this.$store.commit("table/SET_SHOW_ROWS_VALUE", this.showRowsValue - this.showRowsCounter);
           } else {
-            this.$store.commit("table/setShowRowsValue", 0);
+            this.$store.commit("table/SET_SHOW_ROWS_VALUE", 0);
           }
         } else {
           if (this.showRowsValue + this.showRowsCounter < this.tableDataLength) {
             console.log(123123)
-            // this.$store.commit("table/setShowRowsCounter", this.showRowsValue);
-            this.$store.commit("table/setShowRowsValue", this.showRowsValue + this.showRowsCounter);
+            // this.$store.commit("table/SET_SHOW_ROWS_COUNTER", this.showRowsValue);
+            this.$store.commit("table/SET_SHOW_ROWS_VALUE", this.showRowsValue + this.showRowsCounter);
           }
         }
       },
