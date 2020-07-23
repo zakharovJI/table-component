@@ -30,7 +30,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="(row, index) in tableData"
+          v-for="(row, index) in sortedTableData"
           :key="row.id+'-row'"
         >
           <td>
@@ -66,28 +66,37 @@
         </tr>
       </tbody>
     </table>
+    <preloader
+        v-if="preloaderStateShow"
+        class="preloader_big"
+    />
   </div>
 </template>
 <script>
   import { createNamespacedHelpers } from "vuex"
+  import Preloader from "./Preloader.vue";
   const { mapState } = createNamespacedHelpers('table');
 
   export default {
     name: 'BrandTable',
+    components: {
+      Preloader
+    },
     props: {
       header: {
         type: Array,
         required: true
       },
-      content: {
-        type: Array,
-        required: true
-      },
+      // content: {
+      //   type: Array,
+      //   required: true
+      // },
     },
     data() {
       return {
-        tableData: this.content,
-        sortingFlag: true
+        productList: this.$store.getters['table/getSortedProductList'](false),
+        sortingFlag: true,
+        preloaderStateShow: false
       }
     },
     mounted() {
@@ -98,32 +107,37 @@
         'sortActiveCol',
         'selectedRows',
         'showRowsValue',
-        'showRowsCounter',
+        'showRowsCounter'
       ]),
       sortedHeader() {
         return this.header.slice().sort((a, b) => a.tablePosition - b.tablePosition);
       },
+      sortedTableData() {
+        const start = this.showRowsValue;
+        const end = this.showRowsValue + this.showRowsCounter;
+
+        return this.productList.slice(start, end)
+      },
+      productListLength() {
+        return this.$store.getters['table/getProductListLength']
+      }
     },
     watch: {
       sortActiveCol: function (newVal) {
         this.sortData(true);
         this.sortingFlag = false;
       },
-      content: function (newVal) {
-        this.tableData = newVal;
-        this.sortData(true);
-      },
       showRowsCounter: function (newVal, oldVal) {
         if (newVal > oldVal) {
           this.$refs.selectAllCheckbox.stateChecked = false;
         } else {
           this.selectedRows.forEach(row => {
-            if (!this.tableData.includes(row)) {
-              this.$store.dispatch("table/deleteAllFromSelectedRows", row);
+            if (!this.sortedTableData.includes(row)) {
+              this.$store.dispatch("table/deleteFromSelectedRows", row);
             }
           })
 
-          if (this.selectedRows.length === this.tableData.length) {
+          if (this.selectedRows.length === this.sortedTableData.length) {
             this.$refs.selectAllCheckbox.stateChecked = true;
           }
         }
@@ -135,6 +149,9 @@
         if (!newVal?.length) {
           this.$refs.selectAllCheckbox.stateChecked = false;
         }
+      },
+      productListLength: function () {
+        this.sortData(this.sortingFlag, false);
       }
     },
     methods: {
@@ -142,7 +159,7 @@
         return !!this.sortedHeader.find(x => x.value === value);
       },
       getPartCheckboxState() {
-        return this.selectedRows.length !== this.tableData.length && this.selectedRows.length !== 0;
+        return this.selectedRows.length !== this.sortedTableData.length && this.selectedRows.length !== 0;
       },
       allColumnSelected() {
         if (this.$refs.selectAllCheckbox.stateChecked) {
@@ -152,7 +169,7 @@
             checkBox.stateChecked = false;
           });
         } else {
-          this.$store.dispatch("table/addAllToSelectedRows", this.tableData)
+          this.$store.dispatch("table/addAllToSelectedRows", this.sortedTableData)
 
           this.$refs.showRowsCheckbox.forEach(checkBox => {
             checkBox.stateChecked = true;
@@ -166,7 +183,7 @@
           this.$store.dispatch("table/addToSelectedRows", row)
         }
 
-        this.$refs.selectAllCheckbox.stateChecked = this.selectedRows.length === this.tableData.length;
+        this.$refs.selectAllCheckbox.stateChecked = this.selectedRows.length === this.sortedTableData.length;
       },
       checkSortingCol(name) {
         if (name === this.sortActiveCol) {
@@ -175,24 +192,12 @@
 
         return null;
       },
-      sortData(flag = this.sortingFlag) {
-        const sortingCol = this.sortActiveCol;
+      sortData(flag = this.sortingFlag, changeFlag = true) {
+        if (changeFlag) {
+          this.sortingFlag = !this.sortingFlag;
+        }
 
-        this.tableData = this.$store.getters.getSortedProductList(flag);
-
-        // if (flag && sortingCol === 'product') {
-        //   this.tableData = this.tableData.slice().sort((a, b) => a[sortingCol]?.toString().localeCompare(b[sortingCol]?.toString()))
-        // } else {
-        //   this.tableData = this.tableData.slice().sort((a, b) => b[sortingCol]?.toString().localeCompare(a[sortingCol]?.toString()))
-        // }
-        //
-        // if (flag && sortingCol !== 'product') {
-        //   this.tableData = this.tableData.slice().sort((a, b) => a[sortingCol] - b[sortingCol])
-        // } else {
-        //   this.tableData = this.tableData.slice().sort((a, b) => b[sortingCol] - a[sortingCol])
-        // }
-
-        this.sortingFlag = !this.sortingFlag;
+        this.productList = this.$store.getters['table/getSortedProductList'](flag);
       }
     }
   }

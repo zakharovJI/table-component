@@ -124,9 +124,7 @@
     },
     data() {
       return {
-        ...mapState([
-          'sortActiveCol'
-        ]),
+        ...mapState(['sortActiveCol']),
         showingRows: [
           {
             name: '10 Per Page',

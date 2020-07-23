@@ -9,7 +9,6 @@
     <brand-table
       v-if="$refs.controlPanel"
       :header="$refs.controlPanel.sortedSelectedColumns"
-      :content="tableData"
     />
     <preloader
       v-if="preloaderStateShow"

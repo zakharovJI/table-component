@@ -14,22 +14,29 @@ const getters = {
   getSortedProductList: state => flag => {
     const sortingCol = state.sortActiveCol;
 
-    if (flag && sortingCol && sortingCol === 'product') {
-      return state.productList.slice().sort((a, b) => a[sortingCol]?.toString().localeCompare(b[sortingCol]?.toString()))
+    if (sortingCol === 'product') {
+      if (flag && sortingCol) {
+        console.log(1)
+        return state.productList.slice().sort((a, b) => a[sortingCol]?.toString().localeCompare(b[sortingCol]?.toString()))
+      } else {
+        console.log(2)
+        return state.productList.slice().sort((a, b) => b[sortingCol]?.toString().localeCompare(a[sortingCol]?.toString()))
+      }
     } else {
-      return state.productList.slice().sort((a, b) => b[sortingCol]?.toString().localeCompare(a[sortingCol]?.toString()))
-    }
-
-    if (flag && sortingCol && sortingCol !== 'product') {
-      return state.productList.slice().sort((a, b) => a[sortingCol] - b[sortingCol])
-    } else {
-      return state.productList.slice().sort((a, b) => b[sortingCol] - a[sortingCol])
+      if (flag && sortingCol) {
+        console.log(3)
+        return state.productList.slice().sort((a, b) => a[sortingCol] - b[sortingCol])
+      } else {
+        console.log(4)
+        return state.productList.slice().sort((a, b) => b[sortingCol] - a[sortingCol])
+      }
     }
 
     if (!sortingCol) {
       return state.productList;
     }
-  }
+  },
+  getProductListLength: state => state.productList.length
 }
 
 const mutations = {
@@ -60,6 +67,7 @@ const mutations = {
   SET_SHOW_ROWS_COUNTER(state, value) {
     state.showRowsCounter = value;
   },
+
 };
 
 const actions = {
